@@ -14,5 +14,4 @@ setup(
         'azure-identity',
     ],
     packages=find_packages(),
-    }
 )
