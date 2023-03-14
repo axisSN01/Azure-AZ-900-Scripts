@@ -14,9 +14,12 @@ def deploy():
 
     # Acquire a credential object using CLI-based authentication.
     credential = AzureCliCredential()
-
+    subscription_client = SubscriptionClient(credential)
+    subscription = next(subscription_client.subscriptions.list())
+    subscription_id = subscription.subscription_id
+    
     # Retrieve subscription ID from environment variable.
-    subscription_id = os.environ["AZURE_SUBSCRIPTION_ID"]
+    #subscription_id = os.environ["AZURE_SUBSCRIPTION_ID"]
 
 
     # Step 1: Provision a resource group
