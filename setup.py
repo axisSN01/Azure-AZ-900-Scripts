@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 setup(
     name='azure_scripts'
     version='1.0',
@@ -13,5 +13,6 @@ setup(
         'azure-mgmt-network',
         'azure-identity',
     ],
+    packages=find_packages(),
     }
 )
