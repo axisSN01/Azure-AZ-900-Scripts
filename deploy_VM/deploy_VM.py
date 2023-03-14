@@ -5,6 +5,7 @@ from azure.identity import AzureCliCredential
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.network import NetworkManagementClient
 from azure.mgmt.resource import ResourceManagementClient, SubscriptionClient
+from azure.mgmt.network.v2022_05_01.models import NetworkSecurityGroup, SecurityRule
 
 def deploy():
     print(
@@ -33,7 +34,7 @@ def deploy():
     # values however you want.
     RESOURCE_GROUP_NAME = "PythonAzureExample-VM-rg"
     LOCATION = "eastus"
-
+    NETWORK_SEC_NAME = "PythonAzureExample-nsg"
     # Provision the resource group.
     rg_result = resource_client.resource_groups.create_or_update(
         RESOURCE_GROUP_NAME, {"location": LOCATION}
@@ -134,7 +135,19 @@ def deploy():
     nic_result = poller.result()
 
     print(f"Provisioned network interface client {nic_result.name}")
+    
+    # Crear un objeto de Security Rule para permitir el tráfico de entrada
+    inbound_rule = SecurityRule(protocol="Tcp", source_port_range="*", destination_port_range="22", access="Allow",
+                                direction="Inbound", priority=100, source_address_prefix="*", destination_address_prefix="*")
 
+    # Crear un objeto de NSG
+    nsg_params = NetworkSecurityGroup(location=LOCATION, security_rules=[inbound_rule])
+
+    # Crear el NSG en Azure
+    nsg_result = network_client.network_security_groups.create_or_update(RESOURCE_GROUP_NAME, NETWORK_SEC_NAME, nsg_params)
+
+    print("Network Security Group creado con éxito: ", nsg_result)
+    
     # Step 6: Provision the virtual machine
 
     # Obtain the management object for virtual machines
