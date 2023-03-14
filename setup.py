@@ -6,7 +6,7 @@ setup(
     description='some auto scripts deployments',
     url='https://github.com/axisSN01/Azure-AZ-900-Scripts',
     keywords='development, setup, setuptools',
-    python_requires='>=3.11',
+    python_requires='>=3.10',
     install_requires=[
         'azure-mgmt-resource',
         'azure-mgmt-compute',
