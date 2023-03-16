@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 setup(
-    name='azure_scripts',
+    name='azurepyscripts',
     version='1.0',
     author='Alexis Ibarra',
     description='some auto scripts deployments',
