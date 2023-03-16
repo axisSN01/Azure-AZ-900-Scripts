@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: azure-scripts
+Version: 1.0
+Summary: some auto scripts deployments
+Home-page: https://github.com/axisSN01/Azure-AZ-900-Scripts
+Author: Alexis Ibarra
+Keywords: development,setup,setuptools
+Requires-Python: >=3.9

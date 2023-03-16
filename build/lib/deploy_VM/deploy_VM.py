@@ -1,17 +1,11 @@
 # Import the needed credential and management objects from the libraries.
-import os, pdb
+import os
 
 from azure.identity import AzureCliCredential
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.network import NetworkManagementClient
 from azure.mgmt.resource import ResourceManagementClient, SubscriptionClient
-from azure.mgmt.network.v2022_07_01.models import NetworkSecurityGroup, SecurityRule
-
-from azure.common.credentials import ServicePrincipalCredentials
-from azure.mgmt.compute.models import DiskCreateOption
-from azure.mgmt.compute.models import StorageAccountTypes
-from azure.identity import ClientSecretCredential
-
+from azure.mgmt.network.v2022_05_01.models import NetworkSecurityGroup, SecurityRule
 
 def deploy():
     print(
@@ -20,7 +14,6 @@ def deploy():
     )
 
     # Acquire a credential object using CLI-based authentication.
-    pdb.set_trace()
     credential = AzureCliCredential()
     subscription_client = SubscriptionClient(credential)
     subscription = next(subscription_client.subscriptions.list())
@@ -158,7 +151,6 @@ def deploy():
     # Step 6: Provision the virtual machine
 
     # Obtain the management object for virtual machines
-    
     compute_client = ComputeManagementClient(credential, subscription_id)
 
     VM_NAME = "ExampleVM"
@@ -206,92 +198,3 @@ def deploy():
     vm_result = poller.result()
 
     print(f"Provisioned virtual machine {vm_result.name}")
-
-
-def authTheAPP():
-    TENANT_ID = 'c37c52c0-9a0d-40ee-82e2-74449d3752bc'
-    CLIENT = '9137bba4-989d-4e20-95d7-637d3bb562d5'
-    KEY = '3j18Q~ogTuEeSbLj6KCk7JoElPyxxZry1ICJwbjZ'
-    subscription_id = '0ed91248-4453-4c44-8a45-41c1bca97f74'
-    # credentials = ServicePrincipalCredentials(
-    #     client_id=CLIENT,
-    #     secret=KEY,
-    #     tenant=TENANT_ID
-    # )
-
-    credentials = ClientSecretCredential(
-        tenant_id=TENANT_ID,
-        client_id=CLIENT,
-        client_secret=KEY
-    )
-
-    compute_client = ComputeManagementClient(credentials, subscription_id)
-
-    GROUP_NAME = 'RESOURCE_GROUP_NAME'
-    LOCATION = "eastus"
-    VM_NAME = "ExampleVM"
-    USERNAME = "azureuser"
-    PASSWORD = "ChangePa$$w0rd24"
-    VM_SIZE = "Standard_B1s"
-    IMAGE_REFERENCE = {
-        'publisher': 'Canonical',
-        'offer': 'UbuntuServer',
-        'sku': '16.04-LTS',
-        'version': 'latest'
-    }
-    resource_client = ResourceManagementClient(credentials, subscription_id)
-
-    # Provision the resource group.
-    rg_result = resource_client.resource_groups.create_or_update(
-        GROUP_NAME, {"location": LOCATION}
-    )
-
-    print(
-        f"Provisioned resource group {rg_result.name} in the \
-    {rg_result.location} region"
-    )
-
-
-    # Create the virtual machine configuration
-    vm_parameters = {
-        'location': LOCATION,
-        'os_profile': {
-            'computer_name': VM_NAME,
-            'admin_username': USERNAME,
-            'admin_password': PASSWORD
-        },
-        'hardware_profile': {
-            'vm_size': VM_SIZE
-        },
-        'storage_profile': {
-            'image_reference': IMAGE_REFERENCE,
-            'os_disk': {
-                'create_option': DiskCreateOption.from_image,
-                'name': VM_NAME,
-                'managed_disk': {
-                    'storage_account_type': StorageAccountTypes.standard_lrs
-                }
-            },
-        },
-        # 'network_profile': {
-        #     'network_interfaces': [{
-        #         'id': nic.id,
-        #     }]
-        # }
-    }
-
-    #test connection
-    print("Make a Request GET to Azure...list all VM \n\n")
-    for i in compute_client.virtual_machines.list_all(): print(i)
-
-    # Create the virtual machine
-    # pdb.set_trace()
-    compute_client.virtual_machines.begin_create_or_update(
-        GROUP_NAME,
-        VM_NAME,
-        vm_parameters
-    )
-
-if __name__=="__main__":
-    # deploy()
-    authTheAPP()

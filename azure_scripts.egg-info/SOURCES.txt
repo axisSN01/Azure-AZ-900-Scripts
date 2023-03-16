@@ -1,0 +1,8 @@
+setup.py
+azure_scripts.egg-info/PKG-INFO
+azure_scripts.egg-info/SOURCES.txt
+azure_scripts.egg-info/dependency_links.txt
+azure_scripts.egg-info/requires.txt
+azure_scripts.egg-info/top_level.txt
+deploy_VM/__init__.py
+deploy_VM/deploy_VM.py
