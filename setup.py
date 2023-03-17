@@ -12,7 +12,7 @@ setup(
         'azure-mgmt-compute',
         'azure-mgmt-network',
         'azure-identity',
-        'msal'  
+        'msal',  
     ],
     packages=find_packages(),
 )
